@@ -1,12 +1,32 @@
 package fun.mcpc.pilock.loreitemlevel;
 
+import fun.mcpc.pilock.loreitemlevel.event.ItemKillMobEvent;
+import fun.mcpc.pilock.loreitemlevel.util.ItemUtil;
+import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public final class LoreItemLevel extends JavaPlugin {
 
+
+    public static LoreItemLevel api= null;
+    private static YamlConfiguration config;
+    public Map<String, YamlConfiguration> plansMap = new HashMap<>();
+    public Map<String, String> plansloresign = new HashMap<>();
+
     @Override
     public void onEnable() {
-        // Plugin startup logic
+        super.getLogger().info("LoreItemLevel插件开启");
+        api=this;
+        saveDefaultConfig();
+        config = getCustomConfig("config.yml");
+        init();
+        Bukkit.getServer().getPluginManager().registerEvents(new ItemKillMobEvent(), this);
 
     }
 
@@ -14,4 +34,23 @@ public final class LoreItemLevel extends JavaPlugin {
     public void onDisable() {
         // Plugin shutdown logic
     }
+
+    private void init(){
+        for(int i = 0; i< ItemUtil.getPlan().size();i++){
+            plansMap.put(String.valueOf(ItemUtil.getPlan().get(i)),getPlanConfig(ItemUtil.getPlan().get(i)+".yml"));
+            plansloresign.put(String.valueOf(ItemUtil.getPlan().get(i)),getPlanConfig(ItemUtil.getPlan().get(i)+".yml").getString("loresign"));
+        }
+    }
+
+    private YamlConfiguration getCustomConfig(String configName) {
+        File file = new File(getDataFolder(), configName);
+        return YamlConfiguration.loadConfiguration(file);
+    }
+
+    private YamlConfiguration getPlanConfig(String configName) {
+        File file = new File(getDataFolder()+ File.separator + "plan", configName);
+        return YamlConfiguration.loadConfiguration(file);
+    }
+
+
 }
