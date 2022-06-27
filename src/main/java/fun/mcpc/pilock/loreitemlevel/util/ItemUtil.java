@@ -12,5 +12,5 @@ public class ItemUtil {
     public static List getPlan(){
         return LoreItemLevel.api.getConfig().getList("planlist");
     }
-    
+
 }
