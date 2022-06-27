@@ -1,0 +1,3 @@
+name: LoreItemLevel
+version: '${project.version}'
+main: fun.mcpc.pilock.loreitemlevel.LoreItemLevel
