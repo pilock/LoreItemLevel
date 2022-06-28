@@ -18,6 +18,7 @@ public final class LoreItemLevel extends JavaPlugin {
     private static YamlConfiguration config;
     public Map<String, YamlConfiguration> plansMap = new HashMap<>();
     public Map<String, String> plansloresign = new HashMap<>();
+    public Map<String, String> planslevel = new HashMap<>();
 
     @Override
     public void onEnable() {
@@ -39,6 +40,7 @@ public final class LoreItemLevel extends JavaPlugin {
         for(int i = 0; i< ItemUtil.getPlan().size();i++){
             plansMap.put(String.valueOf(ItemUtil.getPlan().get(i)),getPlanConfig(ItemUtil.getPlan().get(i)+".yml"));
             plansloresign.put(String.valueOf(ItemUtil.getPlan().get(i)),getPlanConfig(ItemUtil.getPlan().get(i)+".yml").getString("loresign"));
+            planslevel.put(String.valueOf(ItemUtil.getPlan().get(i)),getPlanConfig(ItemUtil.getPlan().get(i)+".yml").getString("level"));
         }
     }
 
