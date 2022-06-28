@@ -1,3 +1,7 @@
 name: LoreItemLevel
 version: '${project.version}'
 main: fun.mcpc.pilock.loreitemlevel.LoreItemLevel
+commands:
+  lil:
+    description: 吞噬指令
+    usage: /lil help 查看帮助

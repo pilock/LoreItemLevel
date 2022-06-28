@@ -12,10 +12,20 @@ public class ItemKillMobEvent implements Listener {
 
     @EventHandler
     public void killMob(EntityDeathEvent event) {
+        if ((event.getEntity().getKiller() == null) || (!(event.getEntity().getKiller() instanceof Player))) {
+            return;
+        }
         Player player = event.getEntity().getKiller();
         ItemStack item = player.getInventory().getItemInMainHand();
-        player.sendMessage("1:"+ItemUtil.getPlan().toString());
-        player.sendMessage("2:"+ LoreItemLevel.api.plansloresign.entrySet());
-        LoreItemLevel.api.getLogger().info("1:"+ LoreItemLevel.api.plansloresign.entrySet());
+
+            if(!ItemUtil.getPlanName(item).equals("无")){
+                if(LoreItemLevel.api.plansMap.get(ItemUtil.getPlanName(item)).getStringList("blackmob").contains(event.getEntity().getType().toString())) {
+                    return;
+                }
+                ItemUtil.itemLoreExpUp(ItemUtil.getPlanName(item),item,ItemUtil.getCustomeMobExp(ItemUtil.getPlanName(item),event.getEntity().getName().toLowerCase()));
+
+            }
+
+
     }
 }

@@ -1,5 +1,6 @@
 package fun.mcpc.pilock.loreitemlevel;
 
+import fun.mcpc.pilock.loreitemlevel.command.Commands;
 import fun.mcpc.pilock.loreitemlevel.event.ItemKillMobEvent;
 import fun.mcpc.pilock.loreitemlevel.util.ItemUtil;
 import org.bukkit.Bukkit;
@@ -28,6 +29,7 @@ public final class LoreItemLevel extends JavaPlugin {
         config = getCustomConfig("config.yml");
         init();
         Bukkit.getServer().getPluginManager().registerEvents(new ItemKillMobEvent(), this);
+        this.getCommand("lil").setExecutor(new Commands());
 
     }
 
