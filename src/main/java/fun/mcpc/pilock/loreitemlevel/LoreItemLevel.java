@@ -26,7 +26,6 @@ public final class LoreItemLevel extends JavaPlugin {
         super.getLogger().info("LoreItemLevel插件开启");
         api=this;
         saveDefaultConfig();
-        config = getCustomConfig("config.yml");
         init();
         Bukkit.getServer().getPluginManager().registerEvents(new ItemKillMobEvent(), this);
         this.getCommand("lil").setExecutor(new Commands());
@@ -38,7 +37,11 @@ public final class LoreItemLevel extends JavaPlugin {
         // Plugin shutdown logic
     }
 
-    private void init(){
+    public void init(){
+        plansMap.clear();
+        plansloresign.clear();
+        planslevel.clear();
+        config = getCustomConfig("config.yml");
         for(int i = 0; i< ItemUtil.getPlan().size();i++){
             plansMap.put(String.valueOf(ItemUtil.getPlan().get(i)),getPlanConfig(ItemUtil.getPlan().get(i)+".yml"));
             plansloresign.put(String.valueOf(ItemUtil.getPlan().get(i)),getPlanConfig(ItemUtil.getPlan().get(i)+".yml").getString("loresign"));

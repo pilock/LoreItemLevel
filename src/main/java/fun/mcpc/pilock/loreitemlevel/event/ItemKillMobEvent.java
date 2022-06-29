@@ -22,7 +22,7 @@ public class ItemKillMobEvent implements Listener {
                 if(LoreItemLevel.api.plansMap.get(ItemUtil.getPlanName(item)).getStringList("blackmob").contains(event.getEntity().getType().toString())) {
                     return;
                 }
-                ItemUtil.itemLoreExpUp(ItemUtil.getPlanName(item),item,ItemUtil.getCustomeMobExp(ItemUtil.getPlanName(item),event.getEntity().getName().toLowerCase()));
+                ItemUtil.itemLoreExpUp(player,ItemUtil.getPlanName(item),item,ItemUtil.getCustomeMobExp(ItemUtil.getPlanName(item),event.getEntity().getName().toLowerCase()));
 
             }
 

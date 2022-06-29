@@ -1,6 +1,7 @@
 package fun.mcpc.pilock.loreitemlevel.util;
 
 import fun.mcpc.pilock.loreitemlevel.LoreItemLevel;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -44,7 +45,7 @@ public class ItemUtil {
         }
 
     //升级物品积分
-    public static void itemLoreExpUp(String plan,ItemStack itemStack,Integer addExp) {
+    public static void itemLoreExpUp(Player player,String plan,ItemStack itemStack,Integer addExp) {
         if(!ItemUtil.getPlanName(itemStack).equals("无")){
             String oldLoreExpString="",newLoreExpString="";
             YamlConfiguration planYaml = LoreItemLevel.api.plansMap.get(plan);
@@ -56,10 +57,13 @@ public class ItemUtil {
                 }
             }
             List loreList = itemStack.getItemMeta().getLore();
+            player.sendMessage("oldLoreExpString-"+oldLoreExpString);
+            player.sendMessage("newLoreExpString-"+newLoreExpString);
             BasicUtil.replaceAll(loreList, oldLoreExpString, newLoreExpString);
             ItemMeta itemMeta = itemStack.getItemMeta();
             itemMeta.setLore(loreList);
             itemStack.setItemMeta(itemMeta);
+            autoUpItem(player,itemStack,LoreItemLevel.api.plansMap.get(plan).getBoolean("autoup"));
         }
     }
 
@@ -99,9 +103,12 @@ public class ItemUtil {
     //增加手持物品经验
     public static void addItemExp(Player player, String exp) {
         ItemStack itemStack = player.getInventory().getItemInMainHand();
+
         if(!ItemUtil.getPlanName(itemStack).equals("无")){
+
             if(BasicUtil.isNumeric(exp)) {
-                itemLoreExpUp(getPlanName(itemStack),itemStack, Integer.parseInt(exp));
+                itemLoreExpUp(player,getPlanName(itemStack),itemStack, Integer.parseInt(exp));
+                player.sendMessage("添加经验成功 +"+exp);
             }else {
                 player.sendMessage("§f[§c§l!§f] §c数量必须是数字");
             }
@@ -115,6 +122,7 @@ public class ItemUtil {
         if(!ItemUtil.getPlanName(itemStack).equals("无")){
             if(BasicUtil.isNumeric(exp)) {
                 itemLoreExpDel(itemStack, Integer.parseInt(exp));
+                player.sendMessage("删除经验成功 +"+exp);
             }else {
                 player.sendMessage("§f[§c§l!§f] §c数量必须是数字");
             }
@@ -150,6 +158,7 @@ public class ItemUtil {
         }
     }
 
+    //升级物品
     public static void updateItem(Player player,ItemStack itemStack,boolean auto) {
         if(itemStack.getType()== Material.AIR) {
             player.sendMessage("§c§l错误 §3§l必须手持物品才可以升级");
@@ -227,6 +236,22 @@ public class ItemUtil {
             return addItemLore;
         }
         return null;
+    }
+
+    public static void autoUpItem(Player player,ItemStack itemStack,boolean auto) {
+        if(auto) {
+            if(!ItemUtil.getPlanName(itemStack).equals("无")){
+                Map<String,String> LevelExp=new HashMap<String,String>();
+                for (String vaule : LoreItemLevel.api.plansMap.get(ItemUtil.getPlanName(itemStack)).getConfigurationSection("exp").getKeys(false)) {
+                    LevelExp.put(vaule,LoreItemLevel.api.plansMap.get(ItemUtil.getPlanName(itemStack)).getConfigurationSection("exp").getString(vaule));
+                }
+                String itemLevel=String.valueOf(getItemLevel(ItemUtil.getPlanName(itemStack),itemStack)),itemLevelExp=String.valueOf(getItemExp(ItemUtil.getPlanName(itemStack),itemStack));
+                String needExp = LevelExp.get(itemLevel);
+                if(getItemExp(ItemUtil.getPlanName(itemStack),itemStack)>=Integer.parseInt(needExp)) {
+                    updateItem(player, itemStack,true);
+                }
+            }
+        }
     }
 
 }
