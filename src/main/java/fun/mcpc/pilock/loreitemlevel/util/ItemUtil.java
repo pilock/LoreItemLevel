@@ -57,8 +57,6 @@ public class ItemUtil {
                 }
             }
             List loreList = itemStack.getItemMeta().getLore();
-            player.sendMessage("oldLoreExpString-"+oldLoreExpString);
-            player.sendMessage("newLoreExpString-"+newLoreExpString);
             BasicUtil.replaceAll(loreList, oldLoreExpString, newLoreExpString);
             ItemMeta itemMeta = itemStack.getItemMeta();
             itemMeta.setLore(loreList);

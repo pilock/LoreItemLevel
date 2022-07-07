@@ -1,7 +1,9 @@
 package fun.mcpc.pilock.loreitemlevel.command;
 
 import fun.mcpc.pilock.loreitemlevel.LoreItemLevel;
+import fun.mcpc.pilock.loreitemlevel.util.BasicUtil;
 import fun.mcpc.pilock.loreitemlevel.util.ItemUtil;
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -10,6 +12,7 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 public class Commands implements TabExecutor {
@@ -29,6 +32,16 @@ public class Commands implements TabExecutor {
             player = (Player) sender;
         }
         if (((sender instanceof Player)) && (label.equalsIgnoreCase("lil"))) {
+            if((args.length == 1) && (args[0].equalsIgnoreCase("help"))) {
+                sendHelpMessage(player);
+                return true;
+            }
+            if((args.length == 1) && (args[0].equalsIgnoreCase("test"))) {
+
+
+                BasicUtil.getReward(player,"100");
+            }
+
             if((args.length == 1) && (args[0].equalsIgnoreCase("up"))) {
                 ItemUtil.updateItem(player, player.getInventory().getItemInMainHand(),false);
                 return true;
@@ -54,6 +67,9 @@ public class Commands implements TabExecutor {
 
             }
 
+        }else {
+            sendHelpMessage(player);
+            return true;
         }
         return false;
     }
@@ -78,10 +94,13 @@ public class Commands implements TabExecutor {
                 switch (strings[0]) {
                     case "add":
                         tabCommands.add("<数量>");
+                        sender.sendMessage("/lil add <数量> <玩家名>-------给某玩家手持物品添加指定积分");
                         break;
                     case "remove":
                         tabCommands.add("<数量>");
+                        sender.sendMessage("/lil remove <数量> <玩家名>-------给某玩家手持物品添加指定积分");
                         break;
+
                 }
                 return tabCommands;
             case 3:
@@ -96,4 +115,19 @@ public class Commands implements TabExecutor {
         }
         return null;
     }
+    private void sendHelpMessage(CommandSender sender) {
+        sender.sendMessage(
+                "/lil up-------升级手持物品\n" +
+                        "/lil reward <数量>-------兑换指定奖励"+
+                        "/lil help-------查看帮助"
+        );
+        if (sender.isOp()) {
+            sender.sendMessage(
+                    "/lil add <数量> <玩家名>-------给某玩家手持物品添加指定积分\n" +
+                            "/lil remove <数量> <玩家名>-------给某玩家手持物品添加指定积分\n" +
+                            "/lil reload-------重载配置"
+            );
+        }
+    }
+
 }

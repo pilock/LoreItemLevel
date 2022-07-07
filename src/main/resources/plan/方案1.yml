@@ -1,7 +1,7 @@
 #方案匹配标签
 loresign: "§1§2§3§4§5"
 #等级lore字符内容,要一模一样才行
-level: "&c吞噬等级&8: &1"
+level: "§c吞噬等级§8: §1"
 levelexp: "§8吞噬怪物§8: §7"
 #是否开启自动升级
 autoup: false
